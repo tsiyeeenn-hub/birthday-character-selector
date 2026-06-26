@@ -11,8 +11,9 @@
         }
         input[type="radio"] {
             margin-right: 10px;
+            transform: scale(1.5); /* 让圆点大一点，方便点击 */
         }
-        .box { padding: 20px; }
+        .box { padding: 20px; font-family: sans-serif; }
     </style>
 </head>
 <body>
@@ -42,16 +43,29 @@
 
     <script>
         const API = "https://script.google.com/macros/s/AKfycbwnVd6IlDvw097IfDx2i05d4XYo_Ub8KZGdcdD_LbgjgiwlhW9TbuVZaKphkb2v1QbC/exec";
+        
         async function submitForm(){
             const name = document.getElementById("name").value.trim();
-            const sel = document.querySelector("input[name=c]:checked");
+            // 这一行非常重要，它在寻找 name="c" 的被选中项
+            const sel = document.querySelector("input[name=c]:checked"); 
             const msg = document.getElementById("msg");
+            
             if(!name){msg.textContent="请输入姓名"; return;}
             if(!sel){msg.textContent="请选择身份"; return;}
+            
+            msg.textContent = "正在提交...";
+            
             try{
-                await fetch(API, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify({name:name, character:sel.value})});
-                document.querySelector(".box").innerHTML = "<h1>🎉 提交成功！ </h1><h2>" + name + "</h2><p>你选择了 <b>" + sel.value + "</b></p>";
-            } catch(e) { msg.textContent="提交失败，请稍后再试"; }
+                await fetch(API, {
+                    method:"POST", 
+                    mode: "no-cors", // 加上这个通常能避免跨域问题
+                    headers:{"Content-Type":"application/json"}, 
+                    body:JSON.stringify({name:name, character:sel.value})
+                });
+                document.querySelector(".box").innerHTML = "<h1>🎉 提交成功！</h1><p>感谢 <b>" + name + "</b> 的参与。</p>";
+            } catch(e) { 
+                msg.textContent="提交遇到错误，请检查网络或联系管理员"; 
+            }
         }
     </script>
 </body>
