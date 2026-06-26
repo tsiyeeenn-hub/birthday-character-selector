@@ -45,25 +45,25 @@
         // 请确保这个链接是你 Google Apps Script 部署后的 Web App URL
         const API = "https://script.google.com/macros/s/你的部署ID/exec";
         
-        async function submitForm(){
-            const name = document.getElementById("name").value.trim();
-            const sel = document.querySelector("input[name=c]:checked"); 
-            const msg = document.getElementById("msg");
-            
-            if(!name){msg.textContent="请输入姓名"; return;}
-            if(!sel){msg.textContent="请选择身份"; return;}
-            
-            msg.textContent = "正在提交...";
-            
-            // 使用 GET 方式传参，最不容易触发跨域错误
-            const url = API + "?name=" + encodeURIComponent(name) + "&character=" + encodeURIComponent(sel.value);
-            
-            try{
-                await fetch(url, { method: "GET" });
-                document.querySelector(".box").innerHTML = "<h1>🎉 提交成功！</h1><p>感谢 <b>" + name + "</b> 的参与。</p>";
-            } catch(e) { 
-                msg.textContent="提交遇到错误，请检查网络或联系管理员"; 
-            }
+        async function submitForm() {
+    const name = document.getElementById("name").value.trim();
+    const sel = document.querySelector("input[name=c]:checked");
+    const msg = document.getElementById("msg");
+
+    if (!name) { msg.textContent = "请输入姓名"; return; }
+    if (!sel) { msg.textContent = "请选择身份"; return; }
+
+    msg.textContent = "正在提交...";
+
+    // 将数据拼接到 URL 后面 (GET 请求方式)
+    const url = API + "?name=" + encodeURIComponent(name) + "&character=" + encodeURIComponent(sel.value);
+
+    try {
+        // 使用 GET 方式
+        await fetch(url, { method: "GET" });
+        document.querySelector(".box").innerHTML = "<h1>🎉 提交成功！</h1>";
+    } catch (e) {
+        msg.textContent = "提交遇到错误，请检查网络或联系管理员";
         }
     </script>
 </body>
