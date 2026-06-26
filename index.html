@@ -58,10 +58,9 @@
             try{
             // 请确认你的 fetch 完整代码是这样的：
             await fetch(API, {
-                method: "POST",
-                mode: "no-cors", 
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name: name, character: sel.value })
+            method: "POST",
+            headers: { "Content-Type": "text/plain" }, // 使用 text/plain 可以绕过复杂的 CORS 预检
+            body: JSON.stringify({ name: name, character: sel.value })
                 });
                 document.querySelector(".box").innerHTML = "<h1>🎉 提交成功！</h1><p>感谢 <b>" + name + "</b> 的参与。</p>";
             } catch(e) { 
