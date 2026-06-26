@@ -1,30 +1,58 @@
-<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>请选择你的身份</title><link rel="stylesheet" href="style.css"></head><body><div class="box"><h1>🎮 请选择你的身份</h1><input id="name" placeholder="请输入姓名"><!-- 建议的格式 -->
-<div class="option">
-  <input type="radio" id="cat" name="character" value="cat">
-  <label for="cat">🐱 猫</label>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        .box { padding: 20px; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>🎮 请选择你的身份</h1>
+        <input type="text" id="name" placeholder="请输入姓名">
+        <br><br>
+        
+        <div class="option">
+            <input type="radio" id="cat" name="c" value="猫">
+            <label for="cat">🐱 猫</label>
+        </div>
+        
+        <div class="option">
+            <input type="radio" id="dog" name="c" value="狗">
+            <label for="dog">🐶 狗</label>
+        </div>
+        
+        <div class="option">
+            <input type="radio" id="sloth" name="c" value="树懒">
+            <label for="sloth">🦥 树懒</label>
+        </div>
+        
+        <button onclick="submitForm()">确认选择</button>
+        <p id="msg"></p>
+    </div>
 
-<div class="option">
-  <input type="radio" id="dog" name="character" value="dog">
-  <label for="dog">🐶 狗</label>
-</div>
-
-<div class="option">
-  <input type="radio" id="sloth" name="character" value="sloth">
-  <label for="sloth">🦥 树懒</label>
-</div>
-  
-  <button onclick="submitForm()">确认选择</button><p id="msg"></p></div><script>
-const API="https://script.google.com/macros/s/AKfycbwnVd6IlDvWO97IfDx2iO5d4XYo_Ub8KZGdcDd_LbgjgiwlhW9TbuVZaKphkb2v1QbC/exec";
-async function submitForm(){
-const name=document.getElementById("name").value.trim();
-const sel=document.querySelector("input[name=c]:checked");
-const msg=document.getElementById("msg");
-if(!name){msg.textContent="请输入姓名";return;}
-if(!sel){msg.textContent="请选择身份";return;}
-try{
-await fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({name:name,character:sel.value})});
-document.querySelector(".box").innerHTML="<h1>🎉 提交成功！</h1><h2>"+name+"</h2><p>你选择了 <b>"+sel.value+"</b></p>";
-}catch(e){msg.textContent="提交失败，请稍后再试";}
-}
-</script></body></html>
+    <script>
+        const API = "https://script.google.com/macros/s/AKfycbwnVd6IlDvw097IfDx2i05d4XYo_Ub8KZGdcdD_LbgjgiwlhW9TbuVZaKphkb2v1QbC/exec";
+        async function submitForm(){
+            const name = document.getElementById("name").value.trim();
+            const sel = document.querySelector("input[name=c]:checked");
+            const msg = document.getElementById("msg");
+            if(!name){msg.textContent="请输入姓名"; return;}
+            if(!sel){msg.textContent="请选择身份"; return;}
+            try{
+                await fetch(API, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify({name:name, character:sel.value})});
+                document.querySelector(".box").innerHTML = "<h1>🎉 提交成功！ </h1><h2>" + name + "</h2><p>你选择了 <b>" + sel.value + "</b></p>";
+            } catch(e) { msg.textContent="提交失败，请稍后再试"; }
+        }
+    </script>
+</body>
+</html>
