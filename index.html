@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>身份选择</title>
+    <title>身份选择器</title>
 </head>
 <body>
     <div class="box">
@@ -28,6 +28,7 @@
     </div>
 
     <script>
+        // 1. 请确认此 URL 是你 Apps Script 部署后的 Web 应用地址
         const API = "https://script.google.com/macros/s/AKfycbwnVd6IlDvw097IfDx2i05d4XYo_Ub8KZGdcdD_LbgjgiwlhW9TbuVZaKphkb2v1QbC/exec";
 
         document.getElementById("submitBtn").addEventListener("click", async () => {
@@ -41,12 +42,13 @@
             msg.textContent = "正在提交...";
 
             try {
-                // 使用 GET 请求拼接参数
+                // 使用 GET 请求通过 URL 传参，最稳定，不会触发复杂的跨域预检
                 const url = API + "?name=" + encodeURIComponent(name) + "&character=" + encodeURIComponent(sel.value);
                 await fetch(url);
-                document.body.innerHTML = "<h1>🎉 提交成功！</h1>";
+                document.querySelector(".box").innerHTML = "<h1>🎉 提交成功！</h1>";
             } catch (e) {
                 msg.textContent = "提交失败，请刷新重试";
+                console.error(e);
             }
         });
     </script>
