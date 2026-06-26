@@ -1,0 +1,14 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>请选择你的身份</title><link rel="stylesheet" href="style.css"></head><body><div class="box"><h1>🎮 请选择你的身份</h1><input id="name" placeholder="请输入姓名"><div class="cards"><label><input type="radio" name="c" value="猫"><span>🐱<br>猫</span></label><label><input type="radio" name="c" value="狗"><span>🐶<br>狗</span></label><label><input type="radio" name="c" value="树懒"><span>🦥<br>树懒</span></label></div><button onclick="submitForm()">确认选择</button><p id="msg"></p></div><script>
+const API="https://script.google.com/macros/s/AKfycbwnVd6IlDvWO97IfDx2iO5d4XYo_Ub8KZGdcDd_LbgjgiwlhW9TbuVZaKphkb2v1QbC/exec";
+async function submitForm(){
+const name=document.getElementById("name").value.trim();
+const sel=document.querySelector("input[name=c]:checked");
+const msg=document.getElementById("msg");
+if(!name){msg.textContent="请输入姓名";return;}
+if(!sel){msg.textContent="请选择身份";return;}
+try{
+await fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({name:name,character:sel.value})});
+document.querySelector(".box").innerHTML="<h1>🎉 提交成功！</h1><h2>"+name+"</h2><p>你选择了 <b>"+sel.value+"</b></p>";
+}catch(e){msg.textContent="提交失败，请稍后再试";}
+}
+</script></body></html>
