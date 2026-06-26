@@ -1,4 +1,20 @@
-<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>请选择你的身份</title><link rel="stylesheet" href="style.css"></head><body><div class="box"><h1>🎮 请选择你的身份</h1><input id="name" placeholder="请输入姓名"><div class="cards"><label><input type="radio" name="c" value="猫"><span>🐱<br>猫</span></label><label><input type="radio" name="c" value="狗"><span>🐶<br>狗</span></label><label><input type="radio" name="c" value="树懒"><span>🦥<br>树懒</span></label></div><button onclick="submitForm()">确认选择</button><p id="msg"></p></div><script>
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>请选择你的身份</title><link rel="stylesheet" href="style.css"></head><body><div class="box"><h1>🎮 请选择你的身份</h1><input id="name" placeholder="请输入姓名"><!-- 建议的格式 -->
+<div class="option">
+  <input type="radio" id="cat" name="character" value="cat">
+  <label for="cat">🐱 猫</label>
+</div>
+
+<div class="option">
+  <input type="radio" id="dog" name="character" value="dog">
+  <label for="dog">🐶 狗</label>
+</div>
+
+<div class="option">
+  <input type="radio" id="sloth" name="character" value="sloth">
+  <label for="sloth">🦥 树懒</label>
+</div>
+  
+  <button onclick="submitForm()">确认选择</button><p id="msg"></p></div><script>
 const API="https://script.google.com/macros/s/AKfycbwnVd6IlDvWO97IfDx2iO5d4XYo_Ub8KZGdcDd_LbgjgiwlhW9TbuVZaKphkb2v1QbC/exec";
 async function submitForm(){
 const name=document.getElementById("name").value.trim();
