@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>身份选择器</title>
+    <style>
+        .box { padding: 20px; font-family: sans-serif; }
+    </style>
 </head>
 <body>
     <div class="box">
@@ -23,15 +26,15 @@
             <label for="sloth">🦥 树懒</label>
         </div>
         
-        <button id="submitBtn">确认选择</button>
+        <button onclick="submitForm()">确认选择</button>
         <p id="msg"></p>
     </div>
 
     <script>
-        // 1. 请确认此 URL 是你 Apps Script 部署后的 Web 应用地址
+        // 这里的 API 地址保持不变
         const API = "https://script.google.com/macros/s/AKfycbwnVd6IlDvw097IfDx2i05d4XYo_Ub8KZGdcdD_LbgjgiwlhW9TbuVZaKphkb2v1QbC/exec";
 
-        document.getElementById("submitBtn").addEventListener("click", async () => {
+        async function submitForm() {
             const name = document.getElementById("name").value.trim();
             const sel = document.querySelector("input[name=c]:checked");
             const msg = document.getElementById("msg");
@@ -42,15 +45,20 @@
             msg.textContent = "正在提交...";
 
             try {
-                // 使用 GET 请求通过 URL 传参，最稳定，不会触发复杂的跨域预检
-                const url = API + "?name=" + encodeURIComponent(name) + "&character=" + encodeURIComponent(sel.value);
-                await fetch(url);
+                // 这是你问的“第二步”，我已经帮你加进去了
+                await fetch(API, {
+                    method: "POST",
+                    mode: "no-cors", // <--- 关键就在这行，它能跳过 CORS 拦截
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name: name, character: sel.value })
+                });
+                
+                // 提交成功后的反馈
                 document.querySelector(".box").innerHTML = "<h1>🎉 提交成功！</h1>";
             } catch (e) {
-                msg.textContent = "提交失败，请刷新重试";
-                console.error(e);
+                msg.textContent = "提交失败，请联系管理员";
             }
-        });
+        }
     </script>
 </body>
 </html>
