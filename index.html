@@ -32,32 +32,29 @@
 
     <script>
         // 这里的 API 地址保持不变
-        const API = "https://script.google.com/macros/s/AKfycbwnVd6IlDvw097IfDx2i05d4XYo_Ub8KZGdcdD_LbgjgiwlhW9TbuVZaKphkb2v1QbC/exec";
+   <script>
+  const API = "YOUR_DEPLOYED_WEB_APP_URL_HERE";
 
-        async function submitForm() {
-            const name = document.getElementById("name").value.trim();
-            const sel = document.querySelector("input[name=c]:checked");
-            const msg = document.getElementById("msg");
+  document.getElementById("submitBtn").addEventListener("click", async () => {
+    const name = document.getElementById("name").value.trim();
+    const sel = document.querySelector("input[name=c]:checked");
+    const msg = document.getElementById("msg");
 
-            if (!name) { msg.textContent = "请输入姓名"; return; }
-            if (!sel) { msg.textContent = "请选择身份"; return; }
+    if (!name || !sel) {
+      msg.textContent = "Please enter your name and select a character.";
+      return;
+    }
 
-            msg.textContent = "正在提交...";
+    msg.textContent = "Submitting...";
+    
+    // Construct the URL with parameters
+    const url = `${API}?name=${encodeURIComponent(name)}&character=${encodeURIComponent(sel.value)}`;
 
-            try {
-                // 这是你问的“第二步”，我已经帮你加进去了
-                await fetch(API, {
-                    method: "POST",
-                    mode: "no-cors", // <--- 关键就在这行，它能跳过 CORS 拦截
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ name: name, character: sel.value })
-                });
-                
-                // 提交成功后的反馈
-                document.querySelector(".box").innerHTML = "<h1>🎉 提交成功！</h1>";
-            } catch (e) {
-                msg.textContent = "提交失败，请联系管理员";
-            }
+    try {
+      await fetch(url);
+      document.querySelector(".box").innerHTML = "<h1>🎉 Success!</h1>";
+    } catch (e) {
+      msg.textContent = "Submission failed. Please try again.";
         }
     </script>
 </body>
