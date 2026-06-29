@@ -2,60 +2,42 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>身份选择器</title>
-    <style>
-        .box { padding: 20px; font-family: sans-serif; }
-    </style>
 </head>
 <body>
     <div class="box">
-        <h1>🎮 请选择你的身份</h1>
-        <input type="text" id="name" placeholder="请输入姓名">
+        <h1>🎮 Please choose your Character</h1>
+        <input type="text" id="name" placeholder="Enter your Name">
         <br><br>
+        <input type="radio" id="cat" name="c" value="猫"> <label>🐱 Cat</label><br>
+        <input type="radio" id="dog" name="c" value="狗"> <label>🐶 Dog</label><br>
+        <input type="radio" id="sloth" name="c" value="树懒"> <label>🦥 sloth</label><br><br>
         
-        <div class="option">
-            <input type="radio" id="cat" name="c" value="猫">
-            <label for="cat">🐱 猫</label>
-        </div>
-        <div class="option">
-            <input type="radio" id="dog" name="c" value="狗">
-            <label for="dog">🐶 狗</label>
-        </div>
-        <div class="option">
-            <input type="radio" id="sloth" name="c" value="树懒">
-            <label for="sloth">🦥 树懒</label>
-        </div>
-        
-        <button onclick="submitForm()">确认选择</button>
+        <button id="submitBtn">Confirm</button>
         <p id="msg"></p>
     </div>
 
     <script>
-        // 这里的 API 地址保持不变
-   <script>
-  const API = "https://script.google.com/macros/s/AKfycbwnVd6IlDvWO97IfDx2iO5d4XYo_Ub8KZGdcDd_LbgjgiwlhW9TbuVZaKphkb2v1QbC/exec";
+        // 把下面这里的 URL 替换成你刚刚重新部署后获取到的新 URL
+        const API = "https://script.google.com/macros/s/AKfycbwnVd6IlDvWO97IfDx2iO5d4XYo_Ub8KZGdcDd_LbgjgiwlhW9TbuVZaKphkb2v1QbC/exec";
 
-  document.getElementById("submitBtn").addEventListener("click", async () => {
-    const name = document.getElementById("name").value.trim();
-    const sel = document.querySelector("input[name=c]:checked");
-    const msg = document.getElementById("msg");
+        document.getElementById("submitBtn").addEventListener("click", async () => {
+            const name = document.getElementById("name").value.trim();
+            const sel = document.querySelector("input[name=c]:checked");
+            const msg = document.getElementById("msg");
 
-    if (!name || !sel) {
-      msg.textContent = "Please enter your name and select a character.";
-      return;
-    }
+            if(!name || !sel) { msg.textContent = "请输入姓名并选择身份"; return; }
+            msg.textContent = "正在提交...";
 
-    msg.textContent = "Submitting...";
-    
-    // Construct the URL with parameters
-    const url = `${API}?name=${encodeURIComponent(name)}&character=${encodeURIComponent(sel.value)}`;
+            // 使用 GET 请求传参，完全绕过 CORS 拦截
+            const url = API + "?name=" + encodeURIComponent(name) + "&character=" + encodeURIComponent(sel.value);
 
-    try {
-      await fetch(url);
-      document.querySelector(".box").innerHTML = "<h1>🎉 Success!</h1>";
-    } catch (e) {
-      msg.textContent = "Submission failed. Please try again.";
-        }
+            try {
+                await fetch(url);
+                document.querySelector(".box").innerHTML = "<h1>🎉 Done！</h1>";
+            } catch(e) {
+                msg.textContent = "提交失败，请检查网络";
+            }
+        });
     </script>
 </body>
 </html>
