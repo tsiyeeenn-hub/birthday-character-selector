@@ -2,19 +2,41 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <style>
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; font-family: sans-serif; background-color: #f0f2f5; }
+        .box { padding: 40px; border: 1px solid #ddd; border-radius: 20px; width: 350px; text-align: center; background-color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1 { font-size: 24px; color: #333; }
+        input[type="text"] { width: 85%; padding: 12px; font-size: 16px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        .option { text-align: left; display: block; font-size: 18px; margin: 10px 0; padding-left: 20px; }
+        button { width: 100%; padding: 15px; font-size: 18px; background-color: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; margin-top: 20px; }
+        button:hover { background-color: #0056b3; }
+    </style>
 </head>
 <body>
     <div class="box">
-        <h1>🎮 Please Choose Your Character</h1>
-        <input type="text" id="name" placeholder="Enter your Name">
-        <br><br>
-        <input type="radio" id="cat" name="c" value="猫"> <label>🐱 Cat</label><br>
-        <input type="radio" id="dog" name="c" value="狗"> <label>🐶 Dog</label><br>
-        <input type="radio" id="sloth" name="c" value="树懒"> <label>🦥 Sloth</label><br><br>
-        
-        <button id="submitBtn">Confirm</button>
+        <h1>🎮 请选择你的身份</h1>
+        <input type="text" id="name" placeholder="请输入姓名">
+        <div class="option"><input type="radio" id="cat" name="c" value="猫"> <label for="cat">🐱 猫</label></div>
+        <div class="option"><input type="radio" id="dog" name="c" value="狗"> <label for="dog">🐶 狗</label></div>
+        <div class="option"><input type="radio" id="sloth" name="c" value="树懒"> <label for="sloth">🦥 树懒</label></div>
+        <button id="submitBtn">确认选择</button>
         <p id="msg"></p>
     </div>
+    <script>
+        const API = "这里填你的GAS部署URL";
+        document.getElementById("submitBtn").addEventListener("click", async () => {
+            const name = document.getElementById("name").value.trim();
+            const sel = document.querySelector("input[name=c]:checked");
+            const msg = document.getElementById("msg");
+            if(!name || !sel) { msg.textContent = "请填好姓名并选个角色！"; return; }
+            msg.textContent = "提交中...";
+            const url = API + "?name=" + encodeURIComponent(name) + "&character=" + encodeURIComponent(sel.value);
+            try { await fetch(url); document.querySelector(".box").innerHTML = "<h1>🎉 提交成功！</h1>"; } 
+            catch(e) { msg.textContent = "提交失败，请重试"; }
+        });
+    </script>
+</body>
+</html>
 
     <script>
         // 把下面这里的 URL 替换成你刚刚重新部署后获取到的新 URL
